@@ -2,7 +2,7 @@
 """Cach Class."""
 
 import redis
-from typing import AnyStr
+from typing import Union
 import uuid
 
 
@@ -11,13 +11,13 @@ class Cache:
 
     def __init__(self) -> None:
         """Initialize the Cache with a Redis.
-        
+
         connection and flush the database.
         """
         self.__redis = redis.Redis()
         self.__redis.flushdb()
 
-    def store(self, data: AnyStr) -> str:
+    def store(self, data: Union[str, bytes, int, float]) -> str:
         """
         Store data in the Redis database.
 
@@ -28,6 +28,5 @@ class Cache:
             str: The key under which the data is stored.
         """
         key = str(uuid.uuid4())
-        datainput = str(data)
-        self.__redis.set(key, datainput)
+        self.__redis.set(key, data)
         return key
